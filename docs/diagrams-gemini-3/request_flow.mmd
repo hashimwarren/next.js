@@ -1,0 +1,28 @@
+---
+alt: "Next.js Request Flow"
+---
+sequenceDiagram
+    accTitle: Next.js Request Flow
+    accDescr: Sequence of events for handling a request in Next.js.
+
+    participant Client as Browser
+    participant Server as Next.js Server
+    participant Router as Router (App/Pages)
+    participant Renderer as Renderer
+    participant Data as Data Layer
+
+    Client->>Server: HTTP Request
+    Server->>Router: Match Route
+    
+    alt Static Content
+        Router-->>Server: Serve Static File
+        Server-->>Client: Static Response
+    else Dynamic Content
+        Router->>Renderer: Render Page/Component
+        Renderer->>Data: Fetch Data (getStaticProps/getServerSideProps/RSC)
+        Data-->>Renderer: Data
+        Renderer-->>Server: HTML/RSC Payload
+        Server-->>Client: HTTP Response
+    end
+    
+    Client->>Client: Hydration (if applicable)

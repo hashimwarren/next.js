@@ -1,0 +1,34 @@
+---
+alt: "Next.js System Context"
+---
+graph TD
+    accTitle: Next.js System Context
+    accDescr: High-level overview of Next.js components and their interactions.
+
+    User[Developer] -->|Uses| CLI[Next.js CLI]
+    CLI -->|Triggers| Build[Build System]
+    CLI -->|Starts| DevServer[Dev Server]
+    
+    subgraph "Build System"
+        Webpack[Webpack (Stable)]
+        Turbopack[Turbopack (Rust)]
+        SWC[SWC (Compiler)]
+        
+        Webpack --> SWC
+        Turbopack --> SWC
+    end
+    
+    Build -->|Generates| Artifacts[.next / Output]
+    
+    subgraph "Runtime"
+        NodeServer[Node.js Server]
+        EdgeRuntime[Edge Runtime]
+        Client[Browser Client]
+    end
+    
+    Artifacts --> NodeServer
+    Artifacts --> EdgeRuntime
+    Artifacts --> Client
+    
+    DevServer --> NodeServer
+    DevServer --> Client
